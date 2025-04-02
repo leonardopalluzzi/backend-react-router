@@ -1,5 +1,3 @@
-const posts = require('./posts.js')
-
 const commentsArr = [
     {
         id: 1,
