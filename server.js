@@ -8,9 +8,9 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }))
 
-app.use('/api/v1/social', generalRouter)
-
 app.use(express.json())
+
+app.use('/api/v1/social/', generalRouter)
 
 app.listen(port, () => {
     console.log(`server running on http://localhost:${port}`);
