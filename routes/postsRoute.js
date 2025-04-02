@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router()
-const generalController = require('../controllers/generalController.js')
+const postController = require('../controllers/postController.js')
 
 
-router.get('/', generalController.index)
+router.get('/', postController.index)
 
-router.get('/:id', generalController.show)
+router.get('/:id', postController.show)
 
-router.post('/', generalController.store)
+router.post('/', postController.store)
 
-router.put('/:id', generalController.update)
+router.put('/:id', postController.update)
 
-router.patch('/:id', generalController.modify)
+router.patch('/:id', postController.modify)
 
-router.delete('/:id', generalController.destroy)
+router.delete('/:id', postController.destroy)
 
 module.exports = router;

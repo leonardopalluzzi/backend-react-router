@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const generalRouter = require('./routes/postsRoute.js');
+const postsRouter = require('./routes/postsRoute.js');
+const commentsRouter = require('./routes/commentsRoute.js');
 const cors = require('cors');
 
 app.use(cors({
@@ -10,7 +11,9 @@ app.use(cors({
 
 app.use(express.json())
 
-app.use('/api/v1/social/', generalRouter)
+app.use('/api/v1/social/', postsRouter)
+
+app.use('/api/v1/comments', commentsRouter)
 
 app.listen(port, () => {
     console.log(`server running on http://localhost:${port}`);
