@@ -76,18 +76,20 @@ function store(req, res) {
 }
 
 function update(req, res) {
-    const currentId = Number(req.params.id);
+    const currentPostId = Number(req.params.id); //id params to retrive comment list from post id
+    const currentCommentId = Number(req.query.id) //qury string to retrive wanted comment id
 
-    const currentComment = commentsData.find(item => item.id == currentId);
-    const i = commentsData.comments.indexOf(currentComment)
+    console.log(currentCommentId);
 
-    const newComment = {
-        username: req.body.username,
-        userImage: req.body.userImage,
-        content: req.body.content
-    }
+    const currentPost = commentsData.find(item => item.id == currentPostId);
+    console.log(currentPost);
 
-    console.log(currentComment.comments);
+    let currentComment = currentPost.comments.find(item => item.commId == currentCommentId)
+    console.log(currentComment);
+
+
+
+
 
 
     if (!currentComment) {
@@ -96,9 +98,9 @@ function update(req, res) {
             message: 'Post not found'
         })
     } else {
-        currentComment.comments[i] = [
-            newComment
-        ]
+        currentComment.username = req.body.username;
+        currentComment.userImage = req.body.userImage;
+        currentComment.content = req.body.content;
     }
 
     const data = merge(postsData, commentsData)
