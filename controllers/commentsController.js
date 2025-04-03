@@ -31,10 +31,31 @@ function store(req, res) {
     const currentId = Number(req.params.id)
 
     //find the post on whic you have o add the comment to
-    let currentPost = commentsData.find(item => item.id == currentId)
+    const currentPost = commentsData.find(item => item.id == currentId)
+
+    //find highest id
+    let nextId = 0;
+
+    if (currentPost.comments.length > 0) {
+        for (let i = 0; i < currentPost.comments.length; i++) {
+            const currentId = currentPost.comments[i].commId
+            console.log(currentId);
+            if (currentId > nextId) {
+                nextId = currentId
+            }
+        }
+    } else {
+        nextId = 0
+    }
+
+
+
+    console.log(nextId);
+
 
     //vreate new comment
     const newComment = {
+        commId: nextId + 1,
         username: req.body.username,
         userImage: req.body.userImage,
         content: req.body.content,
@@ -43,7 +64,6 @@ function store(req, res) {
 
     //push comment in comments array
     currentPost.comments = [
-
         ...currentPost.comments,
         newComment
     ]
@@ -58,24 +78,32 @@ function store(req, res) {
 function update(req, res) {
     const currentId = Number(req.params.id);
 
-    const currentPost = postsData.find(item => item.id == currentId);
-    const currentComment = commentsData.find(item => item.id == currentId)
+    const currentComment = commentsData.find(item => item.id == currentId);
+    const i = commentsData.comments.indexOf(currentComment)
 
-    if (!currentPost) {
+    const newComment = {
+        username: req.body.username,
+        userImage: req.body.userImage,
+        content: req.body.content
+    }
+
+    console.log(currentComment.comments);
+
+
+    if (!currentComment) {
         res.status(404).json({
             error: '404 Not Found',
             message: 'Post not found'
         })
     } else {
-        currentPost.title = req.body.title;
-        currentPost.content = req.body.content;
-        currentPost.image = req.body.image;
-        currentComment.comments = req.body.comments;
+        currentComment.comments[i] = [
+            newComment
+        ]
     }
 
     const data = merge(postsData, commentsData)
 
-    res.json(data)
+    res.json(commentsData)
 
 }
 
