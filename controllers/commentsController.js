@@ -30,7 +30,7 @@ function show(req, res) {
 function store(req, res) {
     const currentId = Number(req.params.id)
 
-    //find the post on whic you have o add the comment to
+    //find the post on which you have o add the comment to
     const currentPost = commentsData.find(item => item.id == currentId)
 
     //find highest id
