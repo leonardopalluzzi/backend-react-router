@@ -1,5 +1,5 @@
 const postsData = require('../data/posts.js')
-const commentsData = require('../data/comments.js')
+let commentsData = require('../data/comments.js')
 const merge = require('../middlewares/merge.js')
 
 const data = merge(postsData, commentsData)
@@ -28,6 +28,9 @@ function show(req, res) {
 }
 
 function store(req, res) {
+
+    console.log(req);
+
     const currentId = Number(req.params.id)
 
     //find the post on which you have o add the comment to
@@ -49,7 +52,6 @@ function store(req, res) {
     }
 
 
-
     console.log(nextId);
 
 
@@ -63,15 +65,19 @@ function store(req, res) {
     }
 
     //push comment in comments array
-    currentPost.comments = [
-        ...currentPost.comments,
-        newComment
+    commentsData = [
+        ...commentsData.filter(item => item.id != currentId),
+        {
+            id: currentId,
+            comments: [
+                ...currentPost.comments,
+                newComment
+            ]
+        }
     ]
 
-    const data = merge(postsData, commentsData)
-
     //send res
-    res.status(201).json(data)
+    res.status(201).json(newComment)
 
 }
 

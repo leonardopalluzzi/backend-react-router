@@ -2,9 +2,11 @@ const postsData = require('../data/posts.js')
 const commentsData = require('../data/comments.js')
 const merge = require('../middlewares/merge.js')
 
-const data = merge(postsData, commentsData)
+
 
 function index(req, res) {
+
+    const data = merge(postsData, commentsData)
 
     res.json(data)
 

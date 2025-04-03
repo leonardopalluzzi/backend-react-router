@@ -1,4 +1,4 @@
-const commentsArr = [
+let commentsArr = [
     {
         id: 1,
         comments: [
