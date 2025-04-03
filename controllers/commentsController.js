@@ -88,8 +88,34 @@ function update(req, res) {
     console.log(currentComment);
 
 
+    if (!currentComment) {
+        res.status(404).json({
+            error: '404 Not Found',
+            message: 'Post not found'
+        })
+    } else {
+        currentComment.username = req.body.username;
+        currentComment.userImage = req.body.userImage;
+        currentComment.content = req.body.content;
+    }
 
+    const data = merge(postsData, commentsData)
 
+    res.json(commentsData)
+
+}
+
+function modify(req, res) {
+    const currentPostId = Number(req.params.id); //id params to retrive comment list from post id
+    const currentCommentId = Number(req.query.id) //qury string to retrive wanted comment id
+
+    console.log(currentCommentId);
+
+    const currentPost = commentsData.find(item => item.id == currentPostId);
+    console.log(currentPost);
+
+    let currentComment = currentPost.comments.find(item => item.commId == currentCommentId)
+    console.log(currentComment);
 
 
     if (!currentComment) {
@@ -109,39 +135,23 @@ function update(req, res) {
 
 }
 
-function modify(req, res) {
-    const currentId = Number(req.params.id);
-
-    const currentPost = postsData.find(item => item.id == currentId);
-
-    if (!currentPost) {
-        res.status(404).json({
-            error: '404 Not Found',
-            message: 'Post not found'
-        })
-    } else {
-        currentPost.title = req.body.title;
-        currentPost.content = req.body.content;
-        currentPost.image = req.body.image;
-    }
-
-    const data = merge(postsData, commentsData)
-
-    res.json(data)
-
-}
-
 function destroy(req, res) {
-    console.log('destroy');
     //recupero id corrente
     const currentId = Number(req.params.id)
+    const currentCommentId = req.query.id
 
-    const currentPost = postsData.find(item => item.id == currentId)
-    const currentComment = commentsData.find(item => item.id == currentId)
+    const currentPost = commentsData.find(item => item.id == currentId)
+    const currentComment = currentPost.comments.find(item => item.commId == currentCommentId)
 
     //elimino dagli array post e commenti con id corrente
-    postsData.splice(postsData.indexOf(currentPost), 1)
-    commentsData.splice(commentsData.indexOf(currentComment), 1)
+    if (!currentComment) {
+        res.status(404).json({
+            error: '404 Not Found',
+            message: 'Post Not Found'
+        })
+    } else {
+        currentPost.comments.splice(currentPost.comments.indexOf(currentComment), 1)
+    }
 
     //merge array
     const data = merge(postsData, commentsData)
